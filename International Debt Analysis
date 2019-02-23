@@ -1,0 +1,73 @@
+##1.Find total no of unique countries in the dataset
+SELECT count(distinct(country_name))
+FROM `bigquery-public-data.world_bank_intl_debt.international_debt`
+## Ans: 134
+
+## 2. Find value of PPG,Multilateral for Albania in 2019
+SELECT *
+FROM `bigquery-public-data.world_bank_intl_debt.international_debt`
+WHERE country_name="Albania" AND indicator_name= "PPG, multilateral (AMT, current US$)" AND year=2019
+## Ans: 
+Row 	country_name 	country_code 	         indicator_name 	                    indicator_code 	year 	value
+1       Albania          ALB            PPG, multilateral(AMT, current US$)   DT.AMT.MLAT.CD    2019   1.821976167E8
+
+## 3. Find maximum value of PPG for official creditors for Afghanistan
+SELECT max(value)
+FROM `bigquery-public-data.world_bank_intl_debt.international_debt`
+WHERE country_name="Afghanistan" AND indicator_name= "PPG, official creditors (AMT, current US$)" 
+## Ans: 1.077918279E8
+
+##4. Find no. of unique indicators for which data is available
+SELECT count(distinct(indicator_name))
+FROM `bigquery-public-data.world_bank_intl_debt.international_debt`
+## Ans: 214
+
+## 5. Find the average interest payments incurred by Angola
+SELECT avg(value)
+FROM `bigquery-public-data.world_bank_intl_debt.international_debt`
+WHERE indicator_name="Interest payments on external debt, long-term (INT, current US$)" AND country_name="Angola"
+## Ans:3.5180228945714295E8
+
+## 6. Find the yers in India with largest interest payment
+SELECT year, value
+FROM `bigquery-public-data.world_bank_intl_debt.international_debt`
+WHERE indicator_name="Interest payments on external debt, long-term (INT, current US$)" AND country_name="India"
+ORDER BY value DESC
+limit 5
+## Ans:	
+  1 2018 1.25798010183E10
+  2 2019 1.14194758658E10
+  3 2014 1.09716769084E10
+  4 2017 1.03485238254E10
+  5 2020 1.02467042673E10
+	
+## 7. Find the no of years for which Principal repayments is less than one lakh in Burundi
+SELECT count(distinct(year))
+FROM `bigquery-public-data.world_bank_intl_debt.international_debt`
+WHERE indicator_name="Principal repayments on external debt, long-term (AMT, current US$)" AND country_name="Burundi" and value<100000
+## Ans:0
+
+## 8. Find the years in which value for PPG,Private creditors is zero for Bangladesh
+SELECT year
+FROM `bigquery-public-data.world_bank_intl_debt.international_debt`
+WHERE indicator_name="PPG, private creditors (INT, current US$)" and country_name="Bangladesh" and value=0.0
+## Ans:2021,2024,2022,2023,1970,1971,1972,1973
+
+##9. Find the no of years in which value for principle repayments of external debt is zero for Brazil
+SELECT count(year)
+FROM `bigquery-public-data.world_bank_intl_debt.international_debt`
+WHERE indicator_name="Principal repayments on external debt, long-term (AMT, current US$)" and country_name="Brazil" and value=0.0
+## Ans:0
+
+##10. Find the minimum value for any three indicators in Cameroon
+SELECT indicator_name,min(value)
+FROM `bigquery-public-data.world_bank_intl_debt.international_debt`
+WHERE country_name="Cameroon" 
+GROUP BY indicator_name
+limit 3
+## Ans:
+Row 	         indicator_name 	                                                   f0_ 
+1	      Disbursements on external debt, long-term (DIS, current US$)           3.52709208E7
+2       PPG, other private creditors (INT, current US$)                        0.0
+3       Principal repayments on external debt, long-term (AMT, current US$)    6446235.2
+	
